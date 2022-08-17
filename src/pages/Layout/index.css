@@ -20,8 +20,9 @@
   background: #fff;
 }
 .trigger{
-  display:inline-block;
+  background-color: #fff;
   width: 15px;
+  margin-left: 80px;
 }
 .ant-layout {
   height: 100%;
@@ -50,4 +51,8 @@
 }
 .user-logout{
   cursor: pointer;
+}
+.user-logout{
+  margin-left: 5px;
+  padding-right: 10px;
 }
