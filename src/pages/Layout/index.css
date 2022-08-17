@@ -1,12 +1,44 @@
-#components-layout-demo-side .logo {
+#components-layout-demo-custom-trigger .trigger {
+  padding: 0 24px;
+  font-size: 18px;
+  line-height: 64px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+#components-layout-demo-custom-trigger .trigger:hover {
+  color: #1890ff;
+}
+
+#components-layout-demo-custom-trigger .logo {
   height: 32px;
   margin: 16px;
   background: rgba(255, 255, 255, 0.3);
-  
 }
-.logo{
-  background: url('../../assets/logo.png') no-repeat center / 160px auto;
-}
+
 .site-layout .site-layout-background {
   background: #fff;
+}
+.trigger{
+  display:inline-block;
+  width: 15px;
+}
+.ant-layout {
+  height: 100%;
+}
+.logo {
+  display: inline-block;
+  width: 50px;
+  height: 64px;
+  background: url('../../assets/logo1.svg') no-repeat left / 32px;
+  background-color: #fff;
+}
+.logo-item{
+  width: 150px;
+  display: inline-block;
+  height: 64px;
+  background-color: #fff;
+  line-height: 64px;
+  margin: 0;
+  padding: 0;
 }
