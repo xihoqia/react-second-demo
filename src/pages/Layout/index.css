@@ -42,3 +42,12 @@
   margin: 0;
   padding: 0;
 }
+.header-wrap{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content:flex-end;
+}
+.user-logout{
+  cursor: pointer;
+}
