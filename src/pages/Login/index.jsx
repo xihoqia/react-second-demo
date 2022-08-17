@@ -3,15 +3,12 @@ import { Button ,Card,Form, Input,Checkbox} from 'antd'
 import{useNavigate} from 'react-router-dom'
 export default function Login() {
     const navigate =useNavigate() 
+
     const onFinish = values => {
-        console.log(values)
-        if (values.mobile==='18342217943') {
-            navigate('/layout')
-        }
+       if (values.mobile==='18342217943') {
+        navigate('/layout')
+       }
       }
-    //   const toWhere=()=>{
-    //    navigate('/layout')
-    //   }
   return (
     <div className="login">
       <Card className="login-container">

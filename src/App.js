@@ -2,7 +2,6 @@ import React from 'react'
 import routes from './routes'
 import {useRoutes } from 'react-router-dom'
 
-import counterStore from './store/counter'
 
 import { observer } from 'mobx-react-lite'
 
