@@ -11,8 +11,6 @@ import { observer } from 'mobx-react-lite'
   return (
   
       <div className="App">
-         {/* {counterStore.count}
-      <button onClick={counterStore.addCount}>+</button> */}
       {element}
       </div>
    

@@ -1,17 +1,15 @@
 import { Navigate } from "react-router-dom";
-
 import Login from "../pages/Login";
-
 import Layout from "../pages/Layout";
-
 import Welcome from "../pages/welcome";
 import List from "../pages/List";
 import Admin from "../pages/Admin";
+import {AuthRoute} from '../components/AuthRoute'
 
 const newArr = [
   {
     path: "/layout",
-    element: <Layout />,
+    element: <AuthRoute><Layout /></AuthRoute> ,
     children: [
       {
         path: "welcome",
@@ -25,6 +23,7 @@ const newArr = [
         path: "list",
         element: <List />,
       },
+      
     ],
   },
   { path: "/login", element: <Login /> },

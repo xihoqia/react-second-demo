@@ -2,13 +2,15 @@ import React,{useState} from 'react'
 import { MenuFoldOutlined,MenuUnfoldOutlined,TableOutlined,SmileOutlined,CrownOutlined,} from "@ant-design/icons";
 
 import {Layout,Menu} from "antd";
-import { useNavigate,} from "react-router-dom";
+import { useNavigate,useLocation} from "react-router-dom";
 
 const {Sider } = Layout;
 
 export default function LeftMenu() {
     const [collapsed, setCollapsed] = useState(false);
     const navigate = useNavigate();
+    const location=useLocation()
+  
   return (
     <Sider
     trigger={null}
@@ -32,7 +34,7 @@ export default function LeftMenu() {
     <Menu
       theme="dark"
       mode="inline"
-      defaultSelectedKeys={["1"]}
+      defaultSelectedKeys={[location.pathname.split('/')[2]]}
       onClick={(e) => {
         navigate(e.key);
       }}
