@@ -3,22 +3,30 @@ import {
   SearchOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
+import  {useNavigate} from 'react-router-dom' 
 import {useStore} from '../../store';
+import { observer } from 'mobx-react-lite'
 import {Layout,Button, Input, Popconfirm } from "antd";
 
 
 const { Header,} = Layout;
 
 
-export default function Top() {
+ function Top() {
   const [btn, setBtn] = useState(true);
-  const { userStore } = useStore()
+  const { userStore,loginStore} = useStore()
+ 
   useEffect(() => {
     try {
       userStore.getUserInfo()
     } catch { }
   }, [userStore])
 
+  const navigate=useNavigate()
+  const onLogout=()=>{
+    loginStore.LoginOut()
+    navigate('/login')
+  }
   return (
     <Header className="site-layout-background" style={{ padding: 0 }}>
           <div className="header-wrap">
@@ -58,6 +66,7 @@ export default function Top() {
                 title="是否确认退出？"
                 okText="退出"
                 cancelText="取消"
+                onConfirm={onLogout}
               >
                 <LogoutOutlined /> 退出登录
               </Popconfirm>
@@ -66,3 +75,5 @@ export default function Top() {
         </Header>
   )
 }
+
+export default observer(Top)
