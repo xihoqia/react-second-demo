@@ -1,32 +1,226 @@
-import React from 'react'
-import './index.css'
-import {RightOutlined} from '@ant-design/icons'
-export default function Welcome() {
-  return (
-    <>
-    <h2>二级管理页</h2>
-    <div>
-     <h2>欢迎使用Ant Design Pro</h2>
-      <h4>Ant Design Pro 是一个整合了 umi，Ant Design 和 ProComponents 的脚手架方案。致力于在设计规范和基础组件的基础上，继续向上构建，提炼出典型模板/业务组件/配套设计资源，进一步提升企业级中后台产品设计研发过程中的『用户』和『设计者』的体验。</h4>
-     <div className='welcome-item'>
-        <h3>1   了解 umi</h3>
-        <span>umi 是一个可扩展的企业级前端应用框架,umi 以路由为基础的,支持配置式路由和约定式路由，保证路由的功能完备，并以此进行功能扩展。</span>
-        <a href='welcome'>了解更多 <RightOutlined /> </a>
-     </div>
-     <div className='welcome-item'>
-        <h3>2   了解  ant design</h3>
-        <span>antd 是基于 Ant Design 设计体系的 React UI 组件库，主要用于研发企业级中后台产品。</span>
-        <a href='welcome'>了解更多 <RightOutlined /> </a>
-     </div>
-     <div className='welcome-item'>
-        <h3>3   了解 Pro Components</h3>
-        <span>ProComponents 是一个基于 Ant Design 做了更高抽象的模板组件，以 一个组件就是一个页面为开发理念，为中后台开发带来更好的体验。</span>
-        <a href='welcome'>了解更多 <RightOutlined /> </a>
-     </div>
-    </div>
-    </>
-    
-    
-  )
-}
+import { Link } from "react-router-dom";
+import {
+  Card,
+  Breadcrumb,
+  Form,
+  Button,
+  Radio,
+  DatePicker,
+  Select,
+  Table,
+  Tag,
+  Space,
+  Popconfirm
 
+} from "antd";
+import { useEffect, useState } from "react";
+import {http} from '../../utils'
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import img404 from "../../assets/error.png";
+import "moment/locale/zh-cn";
+import locale from "antd/es/date-picker/locale/zh_CN";
+
+const { Option } = Select;
+const { RangePicker } = DatePicker;
+
+const Article = () => {
+  //频道列表管理
+  const [channels, setChannels] = useState([]);
+  
+  useEffect(() => {
+   const fetchChannels = async()=> {
+      const res = await http.get("/channels");
+      setChannels(res.data.channels);
+    }
+    fetchChannels();
+  }, []);
+
+// 文章列表管理
+const [article, setArticleList] = useState({
+   list: [],
+   count: 0
+})
+// 参数管理
+const [params, setParams] = useState({
+   page: 1,
+   per_page: 10
+})
+// 发送接口请求
+useEffect(() => {
+   async function fetchArticleList() {
+     const res = await http.get('/mp/articles', { params })
+     const { results, total_count } = res.data
+     setArticleList({
+       list: results,
+       count: total_count
+     })
+   }
+   fetchArticleList()
+}, [params])
+
+
+  const onFinish = values=> {
+   const { status, channel_id, date } = values
+    // 格式化表单数据
+    const _params = {}
+    // 格式化status
+    if (status !==-1){
+      _params.status = status
+    }
+    if (channel_id) {
+      _params.channel_id = channel_id
+    }
+    if (date) {
+      _params.begin_pubdate = date[0].format('YYYY-MM-DD')
+      _params.end_pubdate = date[1].format('YYYY-MM-DD')
+    }
+    // 修改params参数 触发接口再次发起
+    setParams({
+       ...params,
+       ..._params
+    })
+  };
+  const pageChange = (page) => {
+   // 拿到当前页参数 修改params 引起接口更新
+   setParams({
+     ...params,
+     page
+   })
+}
+const delArticle = async (data) => {
+   await http.delete(`/mp/articles/${data.id}`)
+   // 更新列表
+   setParams({
+     page: 1,
+     per_page: 10
+   })
+}
+  const columns = [
+    {
+      title: "封面",
+      dataIndex: "cover",
+      width: 120,
+      render: (cover) => {
+        return <img src={cover || img404} width={80} height={60} alt="" />;
+      },
+    },
+    {
+      title: "标题",
+      dataIndex: "title",
+      width: 220,
+    },
+    {
+      title: "状态",
+      dataIndex: "status",
+      render: (data) => <Tag color="green">审核通过</Tag>,
+    },
+    {
+      title: "发布时间",
+      dataIndex: "pubdate",
+    },
+    {
+      title: "阅读数",
+      dataIndex: "read_count",
+    },
+    {
+      title: "评论数",
+      dataIndex: "comment_count",
+    },
+    {
+      title: "点赞数",
+      dataIndex: "like_count",
+    },
+    {
+      title: "操作",
+      render: (data) => {
+        return (
+          <Space size="middle">
+            <Button type="primary"
+             shape="circle" 
+            // onClick={() => history.push(`/home/publish?id=${data.id}`)}
+             icon={<EditOutlined />} />
+            <Popconfirm
+              title="确认删除该条文章吗?"
+              onConfirm={() => delArticle(data)}
+              okText="确认"
+              cancelText="取消"
+            >
+            <Button
+              type="primary"
+              danger
+              shape="circle"
+              icon={<DeleteOutlined />}
+            />
+            </Popconfirm>
+          </Space>
+        );
+      },
+    },
+  ];
+
+  return (
+    <div>
+      {/* 筛选区域 */}
+      <Card
+        title={
+          <Breadcrumb separator=">">
+            <Breadcrumb.Item>
+              <Link to="/layout">首页</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>内容管理</Breadcrumb.Item>
+          </Breadcrumb>
+        }
+        style={{ marginBottom: 20 }}
+      >
+        <Form onFinish={onFinish} initialValues={{ status: -1 }}>
+          <Form.Item label="状态" name="status">
+            <Radio.Group>
+              <Radio value={-1}>全部</Radio>
+              <Radio value={0}>草稿</Radio>
+              <Radio value={1}>待审核</Radio>
+              <Radio value={2}>审核通过</Radio>
+              <Radio value={3}>审核失败</Radio>
+            </Radio.Group>
+          </Form.Item>
+
+          <Form.Item label="频道" name="channel_id">
+            <Select placeholder="请选择频道" style={{ width: 120 }}>
+              {channels.map(item => (
+                <Option key={item.id} value={item.id}>
+                  {item.name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+
+          <Form.Item label="日期" name="date">
+            {/* 传入locale属性 控制中文显示*/}
+            <RangePicker locale={locale}></RangePicker>
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit" style={{ marginLeft: 80 }}>
+              筛选
+            </Button>
+          </Form.Item>
+        </Form>
+      </Card>
+      {/* 文章列表 */}
+      <Card title={`根据筛选条件共查询到${article.count} 条结果：`}>
+        <Table 
+        rowKey="id" 
+        columns={columns} 
+        dataSource={article.list}
+        pagination={{
+         position: ['bottomCenter'],
+         current: params.page,
+         pageSize: params.per_page,
+         onChange: pageChange
+       }}
+        />
+      </Card>
+    </div>
+  );
+};
+
+export default Article;

@@ -16,7 +16,11 @@ export default function LeftMenu() {
     trigger={null}
     collapsible
     collapsed={collapsed}
-    style={{ height: "100vh" }}
+    style={{
+      
+      height: '100vh',
+      
+    }}
   >
     <div style={{ display: "flex", width: "200px" }}>
       <div className="logo" />
