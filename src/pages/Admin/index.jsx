@@ -50,6 +50,7 @@ useEffect(() => {
    async function fetchArticleList() {
      const res = await http.get('/mp/articles', { params })
      const { results, total_count } = res.data
+     console.log(results);
      setArticleList({
        list: results,
        count: total_count
@@ -101,7 +102,7 @@ const delArticle = async (data) => {
       dataIndex: "cover",
       width: 120,
       render: (cover) => {
-        return <img src={cover || img404} width={80} height={60} alt="" />;
+        return <img src={cover.images || img404} width={80} height={60} alt="" />;
       },
     },
     {
