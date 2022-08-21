@@ -57,7 +57,7 @@ export default function LeftMenu() {
         {
           key: "list",
           icon: <TableOutlined />,
-          label: "查询表格",
+          label: "发布文章",
         },
       ]}
     />

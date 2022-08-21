@@ -4,6 +4,7 @@ import Layout from "../pages/Layout";
 import Welcome from "../pages/welcome";
 import List from "../pages/List";
 import Admin from "../pages/Admin";
+import NotFound from "../pages/NotFound/NotFound";
 import {AuthRoute} from '../components/AuthRoute'
 
 const newArr = [
@@ -27,6 +28,10 @@ const newArr = [
     ],
   },
   { path: "/login", element: <Login /> },
+  {
+    path: '*',
+    element: <NotFound />,
+  },
   { path: "/", element: <Navigate to="/Login" /> },
 ];
 
