@@ -166,7 +166,7 @@ const delArticle = async (data) => {
         title={
           <Breadcrumb separator=">">
             <Breadcrumb.Item>
-              <Link to="/layout">首页</Link>
+              <Link to="/layout/welcome">首页</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>内容管理</Breadcrumb.Item>
           </Breadcrumb>
